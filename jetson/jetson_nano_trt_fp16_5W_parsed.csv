@@ -1,0 +1,3 @@
+﻿model_id,status,gpu_compute_ms,latency_mean_ms,latency_p99_ms,fps,avg_power_W,energy_mJ_per_frame,peak_temp_C
+Fast_SCNN,OK,31.58,32.32,32.39,30.92,2.93,94.6,32.0
+EfficientViT_B0,OK,42.55,43.3,43.77,22.89,2.73,118.0,32.0

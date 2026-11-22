@@ -10,6 +10,13 @@ Official reconstruction code, stratified splits (`SPLIT_OPT`), and **12 pre-trai
 
 ```text
 ├── checkpoints/                 # 12 pre-trained last-EMA checkpoints (EfficientViT-B0 & Fast-SCNN)
+├── jetson/                      # Portable ONNX models (opset 12), export script, & Jetson 5W TRT logs
+│   ├── EfficientViT_B0.onnx
+│   ├── Fast_SCNN.onnx
+│   ├── export_onnx.py
+│   ├── run_jetson_trt_benchmark.sh
+│   ├── jetson_nano_trt_fp16_5W_parsed.csv
+│   └── trt_logs_5W/
 ├── losses/
 │   └── sota_kd_losses.py        # Implementations of Vanilla KL, AT, CWD, MGD, DIST, IFVD
 ├── models/
@@ -71,6 +78,32 @@ python train_kd.py \
   --kd_method Vanilla_KL \
   --steps 5000 \
   --seed 42
+```
+
+### 4. Jetson Nano Edge Deployment & TensorRT FP16 Profiling
+Because TensorRT `.engine` binaries are hardware- and TensorRT-version-specific (e.g., Maxwell GPU + TensorRT 8.2.1 on JetPack 4.6.3), we distribute portable **`opset=12` ONNX** models (`jetson/EfficientViT_B0.onnx` and `jetson/Fast_SCNN.onnx`), the ONNX exporter (`jetson/export_onnx.py`), and the raw Jetson Nano `5W` `trtexec`/`tegrastats` logs (`jetson/trt_logs_5W/`).
+
+#### Compile & Benchmark Directly on Jetson (Recommended)
+Run the automated TensorRT FP16 + `tegrastats` profiler in `5W` (`nvpmodel -m 1`) or `MAXN` mode:
+```bash
+cd jetson
+bash run_jetson_trt_benchmark.sh 5W
+```
+Or build a reusable TensorRT FP16 engine and run single-model inference profiling manually:
+```bash
+/usr/src/tensorrt/bin/trtexec \
+  --onnx=jetson/Fast_SCNN.onnx \
+  --saveEngine=Fast_SCNN_fp16.engine \
+  --fp16 --workspace=1024 --warmUp=2000 --iterations=150 --avgRuns=100
+```
+
+#### Export Any Pre-Trained `.pth` Checkpoint to ONNX
+To deploy a specific distilled checkpoint (e.g., `EfficientViT_B0_Vanilla_KL` or `Fast_SCNN_DIST`) to Jetson:
+```bash
+python jetson/export_onnx.py \
+  --student Fast_SCNN \
+  --ckpt checkpoints/Fast_SCNN_DIST_s42_last_ema.pth \
+  --out jetson/Fast_SCNN_DIST.onnx
 ```
 
 ---
