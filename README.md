@@ -1,6 +1,6 @@
 # Empirical Evaluation of Knowledge Distillation Paradigms Across Lightweight Architectures for Crop–Weed Semantic Segmentation
 
-Official reconstruction code, stratified splits (`SPLIT_OPT`), and **12 pre-trained student checkpoints** accompanying the IEEE ISRITI paper:
+Official reconstruction code, stratified splits (`SPLIT_OPT`), and **12 pre-trained student checkpoints** accompanying the manuscript *(under review)*:
 
 > **Indra Agustian, Igi Ardiyanto, Sunu Wibirama, and Ruvita Faurina**, *"Empirical Evaluation of Knowledge Distillation Paradigms Across Lightweight Architectures for Crop–Weed Semantic Segmentation"*.
 
@@ -76,11 +76,14 @@ python train_kd.py \
 ---
 
 ## Citation
+The accompanying manuscript is currently **under review**. If you use this benchmark, split, or pre-trained checkpoints in your research, please cite this GitHub repository:
+
 ```bibtex
-@inproceedings{agustian2026empiricalkd,
-  author    = {Agustian, Indra and Ardiyanto, Igi and Wibirama, Sunu and Faurina, Ruvita},
-  title     = {Empirical Evaluation of Knowledge Distillation Paradigms Across Lightweight Architectures for Crop--Weed Semantic Segmentation},
-  booktitle = {Proc. Int. Seminar on Research of Information Technology and Intelligent Systems (ISRITI)},
-  year      = {2026}
+@misc{agustian2026empiricalkd,
+  author       = {Agustian, Indra and Ardiyanto, Igi and Wibirama, Sunu and Faurina, Ruvita},
+  title        = {Empirical Evaluation of Knowledge Distillation Paradigms Across Lightweight Architectures for Crop--Weed Semantic Segmentation},
+  year         = {2026},
+  howpublished = {\url{https://github.com/indraagustian/cwfid-lightweight-kd}},
+  note         = {GitHub repository; manuscript under review}
 }
 ```
